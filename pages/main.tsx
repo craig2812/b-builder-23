@@ -56,6 +56,13 @@ export const MyOnePageApp: React.FC = () => {
     });
   };
 
+  const valueSplit = (split: number) => {
+    setFormData({
+      ...formData,
+      input4: split,
+    });
+  };
+
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const bOdds = convertOdds(formData.input1);
     const lOdds = convertOdds(formData.input3);
@@ -136,7 +143,29 @@ export const MyOnePageApp: React.FC = () => {
         >
           Do Calculations
         </button>
-
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '5px',
+            gap: '20px',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => valueSplit(100)}
+            // disabled={!isFormValid()}
+          >
+            Back WillHill Only
+          </button>
+          <button
+            type="button"
+            onClick={() => valueSplit(-50)}
+            // disabled={!isFormValid()}
+          >
+            Back the Lay Only
+          </button>
+        </div>
         <label htmlFor="result">Lay Bet Amount</label>
         <input
           type="number"
