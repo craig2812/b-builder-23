@@ -6,7 +6,6 @@ export default function App() {
   return (
     <div>
       <MyOnePageApp />
-      <p>Start editing to see some magic happen :)</p>
     </div>
   );
 }
