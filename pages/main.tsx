@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Calculate } from '../utils/calculate';
+import { Calculate, CalculateWinningsBack } from '../utils/calculate';
 
 interface FormData {
   input1: string;
@@ -9,6 +9,10 @@ interface FormData {
   input4: number;
   result: number;
 }
+var whw = 0;
+var lbw = 0;
+// const [whw, setWhw] = useState('');
+// const [lbw, setLbw] = useState('');
 
 export const MyOnePageApp: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -53,12 +57,23 @@ export const MyOnePageApp: React.FC = () => {
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    const aOdds = convertOdds(formData.input1);
-    const bOdds = convertOdds(formData.input3);
-    const result = Calculate(aOdds, bOdds, formData.input2, formData.input4);
+    const bOdds = convertOdds(formData.input1);
+    const lOdds = convertOdds(formData.input3);
+    const result = Calculate(bOdds, lOdds, formData.input2, formData.input4);
+    const { back, lay } = CalculateWinningsBack(
+      formData.input2,
+      bOdds,
+      result,
+      lOdds
+    );
+
+    // setWhw(back);
+    whw = back;
+    lbw = lay;
+    // setLbo(lay);
     handleResult(result as number);
-    console.log('result', result);
-    console.log('formData', formData);
+    console.log('back', back);
+    console.log('lay', lay);
     event.preventDefault();
   };
 
@@ -109,8 +124,8 @@ export const MyOnePageApp: React.FC = () => {
           type="range"
           id="slider"
           name="slider"
-          min="0"
-          max="200"
+          min="-50"
+          max="100"
           value={formData.input4}
           onChange={handleSliderChange}
         />
@@ -122,7 +137,7 @@ export const MyOnePageApp: React.FC = () => {
           Do Calculations
         </button>
 
-        <label htmlFor="result">Result</label>
+        <label htmlFor="result">Lay Bet Amount</label>
         <input
           type="number"
           id="result"
@@ -130,6 +145,14 @@ export const MyOnePageApp: React.FC = () => {
           value={formData.result.toFixed(2)}
           onChange={handleInputChange}
         />
+        <label htmlFor="result">
+          {whw == 0 ? 'WH Covers only' : `Will Hill Bet Win gives...`}
+        </label>
+        <input type="number" id="whw" name="whw" value={whw.toFixed(2)} />
+        <label htmlFor="result">
+          {lbw == 0 ? 'Lay Bet Covers Only' : `Lay Bet Win gives...`}
+        </label>
+        <input type="number" id="lbw" name="lbw" value={lbw.toFixed(2)} />
       </form>
     </div>
   );
